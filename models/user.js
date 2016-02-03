@@ -22,7 +22,10 @@ var UserSchema = new mongoose.Schema( {
 })
 
 
+
 //hash the password before it is saved to the db
+
+//.pre is a built in bcrypt method
 UserSchema.pre('save', function(next) {
 	var user = this;
 	if (!user.isModified('password') ) return next();
@@ -33,10 +36,14 @@ UserSchema.pre('save', function(next) {
 			user.password = hash;
 			next();
 		});
-	});
-	
-})
+	});	
+});
 
 
 
 //compare passwords in the db vs. the submitted password
+
+//comparePassword is a custom method
+UserSchema.methods.comparePassword = function(password){
+	return bcrypt.compareSync(password, this.password);
+}
