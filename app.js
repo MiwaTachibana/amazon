@@ -1,6 +1,6 @@
 var express = require('express');
-var path = require('path');
 var app = express();
+var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -13,5 +13,10 @@ app.use( logger('dev') );
 app.use(bodyParser.json() );
 app.use(bodyParser.urlencoded({extended: false} ) );
 
+
+app.get('/', function(req, res) {
+	res.json( {messsage: "Hello!"} );
+})
+
 app.listen(port);
-console.log('server on ', port)
+console.log('server on port ', port)
