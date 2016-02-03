@@ -22,10 +22,20 @@ var UserSchema = new mongoose.Schema( {
 })
 
 
-
-
 //hash the password before it is saved to the db
-
+UserSchema.pre('save', function(next) {
+	var user = this;
+	if (!user.isModified('password') ) return next();
+	bcrypt.genSalt(8, function(error, salt) {
+		if (error) return next(error);
+		bcrypt.hash(user.password, salt, null, function(error, hash) {
+			if(error) return next(error);
+			user.password = hash;
+			next();
+		});
+	});
+	
+})
 
 
 
