@@ -40,11 +40,11 @@ app.post('/create-user', function(req, res, next) {
 
 app.get('/', function(req, res) {
 	//knows to look in the views folder
-	res.render('home.ejs')
+	res.render('main/home.ejs')
 })
 
 app.get('/about', function(req, res){
-	res.render('about.ejs');
+	res.render('main/about.ejs');
 })
 
 app.listen(port);

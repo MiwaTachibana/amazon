@@ -4,9 +4,17 @@
 	<title>Hello world</title>
 </head>
 <body>
+
+	<!-- how to include the navbar partial -->
+	<% include ./partials/navbar.ejs %>
+
 	<h1>this is a boilerplate page</h1>
 
 	<%- body -%>
+
+
+	<!-- include the footer partial -->
+	<% include ./partials/footer.ejs %>
 
 </body>
 </html>
