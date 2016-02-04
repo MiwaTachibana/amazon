@@ -13,7 +13,8 @@ var engine = require('ejs-mate')
 
 mongoose.connect(mongoUri);
 
-//middleware
+//MIDDLEWARE
+//now knows that the public folder is for the static files
 app.use( logger('dev') );
 app.use(bodyParser.json() );
 app.use(bodyParser.urlencoded({extended: true} ) );
@@ -21,6 +22,8 @@ app.use(bodyParser.urlencoded({extended: true} ) );
 //what kind of engine do we want to use (ejsMate)
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'))
+
 
 
 var UserRouter = require('./models/user.js');
