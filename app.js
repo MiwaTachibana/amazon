@@ -6,24 +6,45 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var port = process.env.PORT || 3000
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/amazon';
-var UserRouter = require('./models/user.js');
+var ejs = require('ejs');
+var engine = require('ejs-mate')
+
 
 
 mongoose.connect(mongoUri);
 
+//middleware
 app.use( logger('dev') );
 app.use(bodyParser.json() );
-app.use(bodyParser.urlencoded({extended: false} ) );
+app.use(bodyParser.urlencoded({extended: true} ) );
+
+//what kind of engine do we want to use (ejsMate)
+app.engine('ejs', engine);
+app.set('view engine', 'ejs');
 
 
-app.get('/', function(req, res) {
-	res.json( {messsage: "Hello!"} );
-})
+var UserRouter = require('./models/user.js');
 
-app.post('/create-user', function(req, res) {
+app.post('/create-user', function(req, res, next) {
 	var user = new UserRouter();
 
-	user.profile.name = 
+	user.profile.name = req.body.name;
+	user.password = req.body.password;
+	user.email = req.body.email;
+
+	user.save(function(error) {
+		if (error) return next(error);
+		res.json("successfully created a new user")
+	});
+});
+
+app.get('/', function(req, res) {
+	//knows to look in the views folder
+	res.render('home.ejs')
+})
+
+app.get('/about', function(req, res){
+	res.render('about.ejs');
 })
 
 app.listen(port);
